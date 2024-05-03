@@ -26,6 +26,7 @@ namespace Диплом_1
         {
             try
             {
+
                 NpgsqlConnection connect = new NpgsqlConnection(path);
                 string query = "select id_member from modes order by id_member desc limit 1";
                 NpgsqlCommand cmd = new NpgsqlCommand(query, connect);
@@ -39,6 +40,18 @@ namespace Диплом_1
                 connect2.Open();
                 int count2 = (Int32)cmd.ExecuteScalar();
                 connect2.Close();
+
+                NpgsqlConnection con = new NpgsqlConnection(path);
+                string com = "select count(id_member) from modes";
+                NpgsqlCommand npgsql = new NpgsqlCommand(com, con);
+                con.Open();
+                int num = (Int32)npgsql.ExecuteScalar();
+                con.Close();
+                if (num == 0)
+                {
+                    count = 0;
+                    count2 = 0;
+                }
 
                 NpgsqlConnection contact = new NpgsqlConnection(path);
                 string sql = "insert into modes(id_member,mode,login,password) values(@id_member,@mode,@login,@password)";
@@ -63,7 +76,7 @@ namespace Диплом_1
                 string sql3 = "insert into members(id_member,id_family,surname,name, patronymic,member) values(@id_member,@id_family,@surname,@name,@patronymic, @member)";
                 NpgsqlCommand command3 = new NpgsqlCommand(sql3, contact3);
                 command3.Parameters.AddWithValue("@id_member", count + 1);
-                command3.Parameters.AddWithValue("@id_family", count2+1);
+                command3.Parameters.AddWithValue("@id_family", count2 + 1);
                 command3.Parameters.AddWithValue("@surname", textBox1.Text);
                 command3.Parameters.AddWithValue("@name", textBox2.Text);
                 command3.Parameters.AddWithValue("@patronymic", textBox3.Text);
@@ -71,6 +84,7 @@ namespace Диплом_1
                 contact3.Open();
                 command3.ExecuteNonQuery();
                 contact3.Close();
+
             }
             catch(Exception ex)
             {
