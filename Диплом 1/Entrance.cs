@@ -15,6 +15,7 @@ namespace Диплом_1
     {
         public string path = "Host=localhost;Username=postgres;Password=cxNTVJas;Database=Families";
         string mode;
+        string id_member;
 
         public Entrance()
         {
@@ -35,6 +36,27 @@ namespace Диплом_1
                 connect.Open();
                 mode = (string)cmd.ExecuteScalar();
                 connect.Close();
+
+                // Передача данных о пользователе
+
+                NpgsqlConnection contact = new NpgsqlConnection(path);
+                string sql = "select id_member from modes where login=@login and password=@password";
+                NpgsqlCommand command = new NpgsqlCommand(sql, contact);
+                command.Parameters.AddWithValue("@login", textBox1.Text);
+                command.Parameters.AddWithValue("@password", textBox2.Text);
+                contact.Open();
+                id_member = (string)command.ExecuteScalar();
+                contact.Close();
+
+                if (mode == string.Empty || id_member == string.Empty)
+                {
+                    throw new Exception("Пользователь не найден");
+                }
+
+                ImportantPage ip = new ImportantPage(id_member, mode);
+                this.Hide();
+                ip.ShowDialog();
+
             }
             catch(Exception ex)
             {

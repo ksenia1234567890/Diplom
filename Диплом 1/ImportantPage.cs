@@ -13,12 +13,14 @@ namespace Диплом_1
 {
     public partial class ImportantPage : Form
     {
-        public string mode = "";
+        public string id_member = "";
+        public string mode;
         public string path = "Host=localhost;Username=postgres;Password=cxNTVJas;Database=Families";
         
-        public ImportantPage(string mode)
+        public ImportantPage(string id_member, string mode)
         {
             InitializeComponent();
+            this.id_member = id_member;
             this.mode = mode;
         }
 
