@@ -574,7 +574,7 @@ namespace Диплом_1
 
                     NpgsqlConnection con2 = new NpgsqlConnection(path);
                     string query2 = "UPDATE savings SET id_member=@id_member, description=@description, amount=@amount" +
-                        "WHERE id_saving=@id_saving)";
+                        "WHERE id_saving = @id_saving)";
                     NpgsqlCommand cmd2 = new NpgsqlCommand(query2, con2);
                     cmd2.Parameters.AddWithValue("@id_saving", Convert.ToInt32(dataGridView1.CurrentCell.Value.ToString()));
                     cmd2.Parameters.AddWithValue("@id_member", Convert.ToInt32(id_member));
@@ -807,7 +807,6 @@ namespace Диплом_1
                     }
                 }
             }
-
             }
 
         public void RefreshMembers()
