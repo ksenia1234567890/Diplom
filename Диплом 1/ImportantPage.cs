@@ -752,7 +752,7 @@ namespace Диплом_1
                     NpgsqlCommand cmd = new NpgsqlCommand(command, connect);
                     cmd.Parameters.AddWithValue("@id_member", members[i]);
                     connect.Open();
-                    NpgsqlDataReader reader = cmd.ExecuteReader();
+                    NpgsqlDataReader reader = cmd.ExecuteReader(); //
                     if(reader.HasRows)
                     {
                         while(reader.Read())
