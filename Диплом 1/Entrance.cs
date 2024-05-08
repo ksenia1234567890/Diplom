@@ -16,6 +16,7 @@ namespace Диплом_1
         public string path = "Host=localhost;Username=postgres;Password=cxNTVJas;Database=Families";
         string mode;
         string id_member;
+        string id_family;
 
         public Entrance()
         {
@@ -45,15 +46,23 @@ namespace Диплом_1
                 command.Parameters.AddWithValue("@login", textBox1.Text);
                 command.Parameters.AddWithValue("@password", textBox2.Text);
                 contact.Open();
-                id_member = (string)command.ExecuteScalar();
+                id_member = command.ExecuteScalar().ToString();
                 contact.Close();
+
+                NpgsqlConnection connect2 = new NpgsqlConnection(path);
+                string query2 = "select id_family from members where id_member=@id_member";
+                NpgsqlCommand cmd2 = new NpgsqlCommand(query2, connect2);
+                cmd.Parameters.AddWithValue("@id_member", Convert.ToInt32(id_member));
+                connect.Open();
+                id_family = (string)cmd.ExecuteScalar();
+                connect.Close();
 
                 if (mode == string.Empty || id_member == string.Empty)
                 {
                     throw new Exception("Пользователь не найден");
                 }
-
-                ImportantPage ip = new ImportantPage(id_member, mode);
+                MessageBox.Show($"{id_member} {mode} {id_family}");
+                ImportantPage ip = new ImportantPage(id_member, mode, id_family);
                 this.Hide();
                 ip.ShowDialog();
 
